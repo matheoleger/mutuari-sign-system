@@ -82,12 +82,24 @@ select {
     padding-right: 40px;
 }
 
+.canvas-elements {
+    display: flex;
+    align-items: flex-start;
+}
+
+.canvas-elements img {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
 canvas {
     border: 2px solid var(--purple);
     border-radius: 6px;
     width: 25em;
     height: 12em;
 }
+
+
 
 button {
     transition: all 0.3s ease-in-out;

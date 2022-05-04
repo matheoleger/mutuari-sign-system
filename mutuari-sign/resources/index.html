@@ -14,14 +14,17 @@
           <h2>Retourner</h2>
         </div>
         <div class="select">
-          <select id="username">
+          <select id="user-select" onChange="setBorrowsInSelect()">
             <option value="" selected>Nom et Prénom</option>
           </select>
-          <select id="borrow">
+          <select id="borrow-select">
             <option value="" selected>Emprunt à signer</option>
           </select>
-          <canvas id="signature-canvas"></canvas>
-          <button>Valider</button>
+          <div class="canvas-elements">
+            <canvas id="signature-canvas"></canvas>
+            <img src="./icons/la-gomme.png" alt="la-gomme" width="20px" onclick="clearDrawing()">
+          </div>
+          <button onclick="setUsersInSelect()">Valider</button>
         </div>
       </div>
     </div>
@@ -31,6 +34,7 @@
         -->
     <script src="js/neutralino.js"></script>
     <!-- Your app's source files -->
+    <script src="js/server_communication.js"></script>
     <script src="js/main.js"></script>
     <script src="js/sign.js"></script>
   </body>
