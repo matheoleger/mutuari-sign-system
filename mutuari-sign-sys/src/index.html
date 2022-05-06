@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <link rel="stylesheet" href="../public/css/styles.css">
+    <title>Mutuari : Signature</title>
+  </head>
+  <body>
+    <div id="neutralinoapp">
+        <img src="../public/img/logo-w-txt.png" alt="logo" height="100vh">
+        <div class="content">
+          <div class="borrowing-menu">
+            <h2 class="selected-menu">Emprunter</h2>
+            <h2>Retourner</h2>
+          </div>
+          <div class="select">
+            <select id="user-select" onChange="setBorrowsInSelect()">
+              <option value="" selected>Nom et Prénom</option>
+            </select>
+            <select id="borrow-select">
+              <option value="" selected>Emprunt à signer</option>
+            </select>
+            <div class="canvas-elements">
+              <canvas id="signature-canvas"></canvas>
+              <img src="../public/img/la-gomme.png" alt="la-gomme" id="rubber-btn" width="20px">
+            </div>
+            <button>Valider</button>
+          </div>
+        </div>
+      </div>
+      <!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
+      <!-- <script>
+        const socket = io("http://localhost:3000");
+      </script> -->
+
+      <!-- <script src="js/server_communication.js"></script> -->
+      <script src="js/renderer/index.js"></script>
+      <script src="js/renderer/sign.js"></script>
+  </body>
+</html>
