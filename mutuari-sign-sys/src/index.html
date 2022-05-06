@@ -18,16 +18,16 @@
           </div>
           <div class="select">
             <select id="user-select" onChange="setBorrowsInSelect()">
-              <option value="" selected>Nom et Prénom</option>
+              <option value="-1" selected>Nom et Prénom</option>
             </select>
             <select id="borrow-select">
-              <option value="" selected>Emprunt à signer</option>
+              <option value="-1" selected>🎥Liste d'objet</option>
             </select>
             <div class="canvas-elements">
               <canvas id="signature-canvas"></canvas>
               <img src="../public/img/la-gomme.png" alt="la-gomme" id="rubber-btn" width="20px">
             </div>
-            <button>Valider</button>
+            <button value="validate">Valider</button>
           </div>
         </div>
       </div>
