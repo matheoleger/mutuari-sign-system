@@ -3,6 +3,8 @@
 
 const userSelect = document.querySelector("#user-select")
 const borrowSelect = document.querySelector("#borrow-select");
+const validateButton = document.querySelector("#validate");
+
 
 let dataForSelect;
 
@@ -13,12 +15,12 @@ let currentUserID = -1;
 let currentForm = "emprunter";
 
 
-
 // dataForSelect = ipcRenderer.sendSync('getDataFromServer'); //Envoie une demande pour récupérer les données.
 dataForSelect = window.electronAPI.getDataFromServer(); //Envoie une demande pour récupérer les données vers le preload.js.
 
-const setRightData = (newChosenForm) => {
-    if(newChosenForm == "emprunter") {
+const setRightData = () => {
+
+    if(currentForm == "emprunter") {
         //Filtre sur tous les utilisateurs ayant des emprunts en attente
         currentUsersList = dataForSelect.filter((data) => {
             //On cherche dans la liste d'emprunt d'un utilisateur, s'il existe au moins 1 emprunt en attente
@@ -27,8 +29,18 @@ const setRightData = (newChosenForm) => {
             } else {
                 return false;
             }
-        });      
-    } else if(newChosenForm == "retourner") {
+        }); 
+
+        const actualUser = currentUsersList.find(user => user.userID == currentUserID);
+        
+        if(actualUser != undefined) {
+            currentBorrowList = actualUser.borrowsList.filter((borrow) => borrow.isBorrowed == false)
+    
+        } else {
+            currentBorrowList = [];
+        }
+
+    } else if(currentForm == "retourner") {
         //Filtre sur tous les utilisateurs ayant des retours en attente
         currentUsersList = dataForSelect.filter((data) => {
             //On cherche dans la liste d'emprunt d'un utilisateur, s'il existe au moins 1 retour en attente
@@ -38,11 +50,17 @@ const setRightData = (newChosenForm) => {
                 return false;
             }
         });
+
+        const actualUser = currentUsersList.find(user => user.userID == currentUserID);
+
+        if(actualUser != undefined) {
+            currentBorrowList = actualUser.borrowsList.filter((borrow) => borrow.isBorrowed == true && borrow.isReturned == false)
+    
+        } else {
+            currentBorrowList = [];
+        }
     }
 
-    const actualUser = currentUsersList.find(user => user.userID == currentUserID);
-
-    currentBorrowList = (actualUser != undefined) ? actualUser.borrowsList : [];
 }
 
 const setBorrowsInSelect = () => {
@@ -85,17 +103,18 @@ const setUsersInSelect = () => {
 
 //Initialisation de l'application
 const initiateApplication = () => {
-    setRightData(currentForm);
+    setRightData();
     setUsersInSelect();
 }
 
-//EventListener
+/* EventListeners */
+
 userSelect.onclick = () => {
     // console.log(ipcRenderer.sendSync("test"));
     // console.log(window.electronAPI.getDataFromServer())
     dataForSelect = window.electronAPI.getDataFromServer();
     console.log("je clique la");
-    setRightData(currentForm);
+    setRightData();
     setUsersInSelect();
 
     //On redéfinit la valeur du select à celle actuellement choisi par l'utilisateur 
@@ -106,10 +125,27 @@ userSelect.onclick = () => {
 userSelect.onchange = () => {
     currentUserID = userSelect.value;
     console.log(currentUserID);
-    setRightData(currentForm);
+    setRightData();
     setBorrowsInSelect();
 }
 
+validateButton.onclick = () => {
+    //Envoie la signature vers l'API qui va elle renvoyer au serveur
+    window.electronAPI.sendSignatureData(userSelect.value, borrowSelect.value, canvas.toDataURL());
+}
 
-//Initialisation de l'application
+document.querySelectorAll(".borrow-state-element").forEach(element => {
+    element.onclick = () => {
+        //On enlève à l'élément actuel la classe "selected-menu" et on le met sur le nouvel élément.
+        document.querySelector(".selected-menu").classList.remove("selected-menu");
+        element.classList.add("selected-menu");
+        currentForm = element.dataset.value;
+        setRightData();
+        setBorrowsInSelect();
+        console.log(currentForm, "tamerelagrossepute");
+    }
+});
+
+
+/* Initialisation de l'application */
 initiateApplication();

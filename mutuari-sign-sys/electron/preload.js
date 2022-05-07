@@ -15,5 +15,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     //Va utilise le système IPC d'electron afin de communiquer avec le "back" (ici server_communication.js)
     getDataFromServer: () => {
         return ipcRenderer.sendSync('getDataFromServer') //demande de récupération des données du serveur
+    },
+    sendSignatureData: () => {
+        ipcRenderer.sendSync('sendSignatureData') //envoie des données de renseignement
     }
 }) 

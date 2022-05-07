@@ -31,6 +31,10 @@ io.on('connection', (client) => {
     console.log(`Connecté au client ${client.id}`)
 
     io.emit("data", {temporaryData}); //Envoyer le tableau de données.
+
+    io.on("getDataFromClient", (data) => {
+        console.log(data)
+    })
 });
 
 server.listen(3000, () => {

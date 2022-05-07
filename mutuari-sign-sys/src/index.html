@@ -13,8 +13,8 @@
         <img src="../public/img/logo-w-txt.png" alt="logo" height="100vh">
         <div class="content">
           <div class="borrowing-menu">
-            <h2 class="selected-menu">Emprunter</h2>
-            <h2>Retourner</h2>
+            <h2 class="borrow-state-element selected-menu" data-value="emprunter">Emprunter</h2>
+            <h2 class="borrow-state-element" data-value="retourner">Retourner</h2>
           </div>
           <div class="select">
             <select id="user-select" onChange="setBorrowsInSelect()">
@@ -27,7 +27,7 @@
               <canvas id="signature-canvas"></canvas>
               <img src="../public/img/la-gomme.png" alt="la-gomme" id="rubber-btn" width="20px">
             </div>
-            <button value="validate">Valider</button>
+            <button id="validate" value="validate">Valider</button>
           </div>
         </div>
       </div>

@@ -10,15 +10,17 @@ socket.on('test', () =>{
 
 socket.on("data", (data) =>{
     console.log(data);
-    console.log(data[0].firstName);
-    console.log(data[0].borrowsList[0].materialName);
+    // console.log(data[0].firstName);
+    // console.log(data[0].borrowsList[0].materialName);
 
     //Ecouter s'il y a envoie de "getDataFromServer" du Renderer index.js
     ipcMain.on('getDataFromServer', (event) => {
-        event.returnValue = data; //Retourner la valeur au renderer.
+        event.returnValue = data.temporaryData; //Retourner la valeur au renderer.
     });
 
-    ipcMain.on("test", (event) => {
-        event.returnValue = "bonsoir je te test";
-    })
+})
+
+//envoyer les données de signature au serveur.
+ipcMain.on("sendSignatureData", (event, data) => {
+    socket.emit('getDataFromClient', data);
 })
