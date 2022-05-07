@@ -129,11 +129,6 @@ userSelect.onchange = () => {
     setBorrowsInSelect();
 }
 
-validateButton.onclick = () => {
-    //Envoie la signature vers l'API qui va elle renvoyer au serveur
-    window.electronAPI.sendSignatureData(userSelect.value, borrowSelect.value, canvas.toDataURL());
-}
-
 document.querySelectorAll(".borrow-state-element").forEach(element => {
     element.onclick = () => {
         //On enlève à l'élément actuel la classe "selected-menu" et on le met sur le nouvel élément.
@@ -146,6 +141,24 @@ document.querySelectorAll(".borrow-state-element").forEach(element => {
     }
 });
 
+validateButton.onclick = () => {
+    //Envoie la signature vers l'API qui va elle renvoyer au serveur
+    let dataToSend = {
+        userID: userSelect.value,
+        borrowID: borrowSelect.value,
+        signature: canvas.toDataURL()
+    };
+
+    window.electronAPI.sendSignatureData(dataToSend);
+
+    //Réinitialiser les valeurs
+    clearDrawing();
+    dataForSelect = window.electronAPI.getDataFromServer();
+    currentUserID = -1;
+    setRightData();
+    setUsersInSelect();
+    setBorrowsInSelect();
+}
 
 /* Initialisation de l'application */
 initiateApplication();

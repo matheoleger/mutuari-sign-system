@@ -27,14 +27,19 @@ const temporaryData = [
 ]
 
 io.on('connection', (client) => { 
-    io.emit('test');
+    io.emit('connected');
     console.log(`Connecté au client ${client.id}`)
 
-    io.emit("data", {temporaryData}); //Envoyer le tableau de données.
+    client.emit("data", {temporaryData}); //Envoyer le tableau de données.
 
-    io.on("getDataFromClient", (data) => {
-        console.log(data)
+    //récupération des données de la signature du client
+    client.on("getDataFromClient", (data) => {
+        console.log("l'id de l'utilisateur est : ", data.userID)
     })
+
+    client.on('disconnect', () => {
+        console.log(`Le client ${client.id} est déconnecté`);
+    });
 });
 
 server.listen(3000, () => {

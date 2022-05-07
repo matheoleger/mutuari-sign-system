@@ -16,7 +16,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getDataFromServer: () => {
         return ipcRenderer.sendSync('getDataFromServer') //demande de récupération des données du serveur
     },
-    sendSignatureData: () => {
-        ipcRenderer.sendSync('sendSignatureData') //envoie des données de renseignement
+    sendSignatureData: (data) => {
+        console.log(data)
+        ipcRenderer.send('sendSignatureData', data) //envoie des données de renseignement
     }
 }) 
