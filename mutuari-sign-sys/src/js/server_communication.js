@@ -1,15 +1,12 @@
 const { ipcMain } = require('electron')
 const io = require("socket.io-client");
-const socket = io("http://localhost:3001");
-
-// let dataForSelect = {};
+const socket = io("http://141.95.166.131:8055");
 
 socket.on('connected', () =>{
     console.log("On est connecté avec le serveur");
 })
 
 socket.on("data", (data) =>{
-    // console.log(data.borrows);
 
     //Ecouter s'il y a envoie de "getDataFromServer" du Renderer index.js
     ipcMain.on('getDataFromServer', (event) => {

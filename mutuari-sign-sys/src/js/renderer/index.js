@@ -1,6 +1,3 @@
-// const { ipcRenderer } = require('electron')
-// const serverCommunicator = require("../server_communication.js")
-
 const userSelect = document.querySelector("#user-select")
 const borrowSelect = document.querySelector("#borrow-select");
 const validateButton = document.querySelector("#validate");
@@ -39,7 +36,6 @@ const setData = (data) => {
 }
 
 
-// dataForSelect = ipcRenderer.sendSync('getDataFromServer'); //Envoie une demande pour récupérer les données.
 dataForSelect = setData(window.electronAPI.getDataFromServer()); //Envoie une demande pour récupérer les données vers le preload.js.
 
 const setRightData = () => {
@@ -88,7 +84,6 @@ const setRightData = () => {
 }
 
 const setBorrowsInSelect = () => {
-    // const selectUsers = document.querySelector("#user-select");
     const selectBorrows = document.querySelector("#borrow-select");
 
     //Enlever toutes les options
@@ -134,8 +129,6 @@ const initiateApplication = () => {
 /* EventListeners */
 
 userSelect.onclick = () => {
-    // console.log(ipcRenderer.sendSync("test"));
-    // console.log(window.electronAPI.getDataFromServer())
 
     dataForSelect = setData(window.electronAPI.getDataFromServer());
     console.log("je clique la");
@@ -163,7 +156,6 @@ document.querySelectorAll(".borrow-state-element").forEach(element => {
         currentForm = element.dataset.value;
         setRightData();
         setBorrowsInSelect();
-        console.log(currentForm, "tamerelagrossepute");
     }
 });
 
