@@ -14,9 +14,33 @@ let currentBorrowList;
 let currentUserID = -1;
 let currentForm = "emprunter";
 
+const setData = (data) => {
+    let finalData = [];
+
+    data.users.forEach(user => {
+
+        let borrowForUser = data.borrows.filter(borrow => {
+            return borrow.userID == user.id;
+        })
+
+        let obj = {
+            userID: user.id,
+            firstName: user.firstname,
+            lastName: user.lastname,
+            borrowsList: borrowForUser
+        }
+
+        finalData.push(obj);
+    })
+
+    console.log(finalData);
+
+    return finalData;
+}
+
 
 // dataForSelect = ipcRenderer.sendSync('getDataFromServer'); //Envoie une demande pour récupérer les données.
-dataForSelect = window.electronAPI.getDataFromServer(); //Envoie une demande pour récupérer les données vers le preload.js.
+dataForSelect = setData(window.electronAPI.getDataFromServer()); //Envoie une demande pour récupérer les données vers le preload.js.
 
 const setRightData = () => {
 
@@ -78,7 +102,7 @@ const setBorrowsInSelect = () => {
     selectBorrows.options[selectBorrows.options.length] = new Option("🎥Liste d'objet", -1)
 
     currentBorrowList.forEach(el => {
-        selectBorrows.options[selectBorrows.options.length] = new Option(el.materialName, el.borrowID);
+        selectBorrows.options[selectBorrows.options.length] = new Option(el.materialName, el.id);
     })
 }
 
@@ -112,10 +136,12 @@ const initiateApplication = () => {
 userSelect.onclick = () => {
     // console.log(ipcRenderer.sendSync("test"));
     // console.log(window.electronAPI.getDataFromServer())
-    dataForSelect = window.electronAPI.getDataFromServer();
+
+    dataForSelect = setData(window.electronAPI.getDataFromServer());
     console.log("je clique la");
     setRightData();
     setUsersInSelect();
+
 
     //On redéfinit la valeur du select à celle actuellement choisi par l'utilisateur 
     //on doit faire ça car on rechange les valeurs du select à chaque clique sur le select...)
@@ -145,7 +171,7 @@ validateButton.onclick = () => {
     //Envoie la signature vers l'API qui va elle renvoyer au serveur
     let dataToSend = {
         userID: userSelect.value,
-        borrowID: borrowSelect.value,
+        borrow: dataForSelect.find(user => user.userID == userSelect.value).borrowsList.find(borrow => borrow.id == borrowSelect.value),
         signature: canvas.toDataURL()
     };
 
@@ -153,7 +179,7 @@ validateButton.onclick = () => {
 
     //Réinitialiser les valeurs
     clearDrawing();
-    dataForSelect = window.electronAPI.getDataFromServer();
+    dataForSelect = setData(window.electronAPI.getDataFromServer());
     currentUserID = -1;
     setRightData();
     setUsersInSelect();

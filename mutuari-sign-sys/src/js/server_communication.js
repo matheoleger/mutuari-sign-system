@@ -1,6 +1,6 @@
 const { ipcMain } = require('electron')
 const io = require("socket.io-client");
-const socket = io("http://localhost:3000");
+const socket = io("http://localhost:3001");
 
 // let dataForSelect = {};
 
@@ -9,11 +9,12 @@ socket.on('connected', () =>{
 })
 
 socket.on("data", (data) =>{
-    console.log(data);
+    // console.log(data.borrows);
 
     //Ecouter s'il y a envoie de "getDataFromServer" du Renderer index.js
     ipcMain.on('getDataFromServer', (event) => {
-        event.returnValue = data.temporaryData; //Retourner la valeur au renderer.
+        event.returnValue = data; //Retourner la valeur au renderer.
+        event.reply('getDataFromServerReply', data)
     });
 
 })
