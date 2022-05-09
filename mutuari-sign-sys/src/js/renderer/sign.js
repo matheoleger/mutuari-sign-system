@@ -1,5 +1,6 @@
-const canvas = document.querySelector('#signature-canvas');
+const rubber = document.querySelector("#rubber-btn");
 
+const canvas = document.querySelector('#signature-canvas');
 const context = canvas.getContext('2d');
 
 
@@ -14,6 +15,10 @@ const endDrawing = () => {
     context.beginPath();
 }
 
+const clearDrawing = () => {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
 const draw = (e) => {
 
     //Va permettre de mettre la valeur de la position du trait parfaitement en dessous du curseur
@@ -21,9 +26,9 @@ const draw = (e) => {
     let scaleX = canvas.width / rect.width;
     let scaleY = canvas.height / rect.height; 
 
-    
+
     if(isDrawing) {
-        context.lineWidth = 10;
+        context.lineWidth = 5;
         context.lineCap = "round";
 
         context.lineTo((e.clientX - rect.left) * scaleX, (e.clientY - rect.top) * scaleY);
@@ -37,3 +42,4 @@ const draw = (e) => {
 canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("mouseup", endDrawing);
 canvas.addEventListener("mousemove", draw);
+rubber.addEventListener("click", clearDrawing);
